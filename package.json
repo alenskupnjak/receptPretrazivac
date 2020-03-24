@@ -1,0 +1,17 @@
+{
+  "name": "receptpretrazivac",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
+  "author": "Alen Skupnjak",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
