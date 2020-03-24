@@ -1,3 +1,5 @@
 import num from './test';
 
-console.log('Ubaceno it testa' + num);
+const x = 23;
+
+console.log('Ubaceno it testa hehhe hoho' + num + '---' + x);
