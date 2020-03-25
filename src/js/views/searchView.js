@@ -15,6 +15,21 @@ export const clearResults = () => {
 }
 
 
+const limitRecipeTitle = (title, limit = 17) => {
+  if (title.length < limit) return title;
+  let newTitle = [];
+  let brojac = 0
+  title.split(' ').forEach((element, index) => {
+      if (brojac + element.length <= limit) {
+        brojac += element.length + 1
+        newTitle.push(element); 
+      }
+  });
+   return newTitle.join(' ') +' ...'
+}
+
+
+
 const renderRecipe = (data) => {
   const markup = `
     <li>
@@ -23,12 +38,13 @@ const renderRecipe = (data) => {
               <img src="${data.image_url}" alt="${data.title}">
           </figure>
           <div class="results__data">
-              <h4 class="results__name">${data.title}</h4>
+              <h4 class="results__name">${limitRecipeTitle(data.title)}</h4>
               <p class="results__author">${data.publisher}</p>
           </div>
       </a>
     </li>
   `;
+  limitRecipeTitle(data.title);
   elements.listRecipe.insertAdjacentHTML("beforeend",markup);
 };
 
