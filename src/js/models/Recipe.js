@@ -6,6 +6,8 @@ export default class Recipe {
   }
 
 
+  // https://forkify-api.herokuapp.com/api/get?&rId=47032
+
   async getRecipe() {
     try {
       const res = await axios(`https://forkify-api.herokuapp.com/api/get?&rId=${this.id}`);
@@ -22,12 +24,12 @@ export default class Recipe {
 
   calcTime() {
     const numIng = this.ingredients.length;
-    const periods = Math.ceil(numImg / 3);
+    const periods = Math.ceil(numIng / 3);
     this.time = periods * 15;
   }
 
   calcServings() {
-  this.servings = 4;
+    this.servings = 4;
   }
 
 }

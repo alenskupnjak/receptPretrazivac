@@ -1,6 +1,6 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
-import Recipe from './models/Recipe';
+import  Recipe  from './models/Recipe';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /** Global state of the app
@@ -63,8 +63,45 @@ elements.searchResPages.addEventListener('click', e=>{
 /*
 * RECIPE CONTROLER
 */
-const r = new Recipe(46956)
-r.getRecipe();
-console.log(r)
+
+const controlRecipe = async () => {
+   // povlačim podatak direkno sa stranice i dobivamo npr. #45873
+   // let id = window.location.hash.replace('#','');
+   let id = window.location.hash;
+
+   // dobivamo podatak npr #45873, nama treba 45873, micemo hash
+   id = id.replace('#','');
+   
+   if (id) {
+      // Prepare UI for changes
+
+      // Highlight selected search item
+
+      // Create new recipe object
+      state.recipe = new Recipe(id);
+
+      try {
+      
+            // Get recipe data and parse ingredients
+            await state.recipe.getRecipe();
+            
+            // Calculate servings and time
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+            // Render recipe
+            
+            console.log(state.recipe)
+      } catch (err) {
+         alert(err)
+      }
+      
+   }
 
 
+};
+
+window.addEventListener('hashchange', controlRecipe);
+window.addEventListener('load', controlRecipe);
+
+// moze i ovako..
+// ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
