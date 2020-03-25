@@ -33,7 +33,7 @@ const limitRecipeTitle = (title, limit = 17) => {
 const renderRecipe = (data) => {
   const markup = `
     <li>
-      <a class="results__link results__link--active" href="#${data.recipe_id}">
+      <a class="results__link" href="#${data.recipe_id}">
           <figure class="results__fig">
               <img src="${data.image_url}" alt="${data.title}">
           </figure>
