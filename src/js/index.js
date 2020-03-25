@@ -33,7 +33,6 @@ const controlSearch = async () => {
       clearLoader();
       searchView.renderResults(state.search.result)
       console.log(state.search.result);
-      console.log(state);
       
 
 
@@ -49,6 +48,16 @@ const controlSearch = async () => {
   e.preventDefault();
 
   controlSearch();
+})
+
+elements.searchResPages.addEventListener('click', e=>{
+   const btn = e.target.closest('.btn-inline');
+   if (btn) {
+      const gotoPage = parseInt(btn.dataset.goto, 10);
+      searchView.clearResults();
+      searchView.renderResults(state.search.result, gotoPage)
+   }
+
 })
 
 
