@@ -1,5 +1,4 @@
-import num from './test';
+import Search from './models/Search';
 
-const x = 23;
-
-console.log('Ubaceno it testa hehhe hoho' + num + '---' + x);
+const search = new Search('pizza');
+search.getResults();
