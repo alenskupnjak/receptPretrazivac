@@ -1,8 +1,11 @@
 import { elements } from './base';
 
+
+
 export const getInput = () => {
   return elements.searchInput.value;
 };
+
 
 
 export const clearInput = () => {
@@ -10,10 +13,12 @@ export const clearInput = () => {
 }
 
 
+
 export const clearResults = () => {
   elements.listRecipe.innerHTML= "";
   elements.searchResPages.innerHTML="";
 }
+
 
 
 const limitRecipeTitle = (title, limit = 17) => {
@@ -28,6 +33,7 @@ const limitRecipeTitle = (title, limit = 17) => {
   });
    return newTitle.join(' ') +' ...'
 }
+
 
 
 
@@ -50,6 +56,7 @@ const renderRecipe = (data) => {
 };
 
 
+
 const createButton = (page, type) =>{
  let buttton = `<button class="btn-inline results__btn--${type}" data-goto=${type ==='prev' ? page - 1 : page + 1}>
     <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
@@ -60,6 +67,8 @@ const createButton = (page, type) =>{
 return buttton;
 
 }
+
+
 
 const renderButtons = (page, numResults, resPerPage) => {
   const pages = Math.ceil(numResults / resPerPage);
@@ -79,6 +88,8 @@ const renderButtons = (page, numResults, resPerPage) => {
 
   elements.searchResPages.insertAdjacentHTML('afterbegin', button);
 }
+
+
 
 export const renderResults = (recipes, page= 1, resPerPage = 10) => {
   const start = (page - 1) * resPerPage;

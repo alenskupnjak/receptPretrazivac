@@ -1,5 +1,6 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
+import Recipe from './models/Recipe';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /** Global state of the app
@@ -12,6 +13,10 @@ import {elements, renderLoader, clearLoader} from './views/base';
 
 const state = {};
 
+
+/*
+* SEARCH CONTROLER
+*/
 const controlSearch = async () => {
    // 1) Get query from view
    const query = searchView.getInput();
@@ -32,13 +37,8 @@ const controlSearch = async () => {
       // 5) Render results on UI
       clearLoader();
       searchView.renderResults(state.search.result)
-      console.log(state.search.result);
-      
-
-
+   
    }
-
-
 };
 
 
@@ -46,7 +46,6 @@ const controlSearch = async () => {
   elements.searchForm.addEventListener('submit', e => {
   // sprečavamo da se stranica sama radi refres
   e.preventDefault();
-
   controlSearch();
 })
 
@@ -60,5 +59,12 @@ elements.searchResPages.addEventListener('click', e=>{
 
 })
 
+
+/*
+* RECIPE CONTROLER
+*/
+const r = new Recipe(46956)
+r.getRecipe();
+console.log(r)
 
 
