@@ -17,6 +17,20 @@ export const clearResults = () => {
   elements.searchResPages.innerHTML = '';
 };
 
+// selektiranje na ekranu odabrani recept
+export const highlightSelected = id => {
+  const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+  console.log('ahha');
+  
+  console.log(resultsArr);
+  resultsArr.forEach(el => {
+      el.classList.remove('results__link--active');
+  });
+  document.querySelector(`.results__link[href*="${id}"]`).classList.add('results__link--active');
+  console.log(document.querySelector(`.results__link[href="${id}"]`));
+};
+
+
 
 // limitiranje zapisa TITLR na odredeni vroj znakova (limit)
 const limitRecipeTitle = (title, limit = 17) => {

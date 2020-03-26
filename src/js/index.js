@@ -62,8 +62,10 @@ const controlRecipe = async () => {
       // Prepare UI for changes
       recipeView.clearRecipe();
       renderLoader(elements.recipe);
+
       // Highlight selected search item
-      
+      if (state.search) searchView.highlightSelected(id);
+
       // Create new recipe object
       state.recipe = new Recipe(id);
       
@@ -86,22 +88,23 @@ const controlRecipe = async () => {
       } catch (err) {
          alert(err)
       }
-
-
       
+      console.log('Stanje projekta');
+      console.log(state)
    }
 };
 
 
 
-// EventListener
+// EventListener pokretanje programa
   elements.searchForm.addEventListener('submit', e => {
   // sprečavamo da se stranica sama radi refres
   e.preventDefault();
   controlSearch();
-})
+});
 
-// za <-PREV   NEXT->
+
+// EventListener za <-PREV   NEXT->
 elements.searchResPages.addEventListener('click', e=>{
    const btn = e.target.closest('.btn-inline');
    if (btn) {
@@ -109,8 +112,7 @@ elements.searchResPages.addEventListener('click', e=>{
       searchView.clearResults();
       searchView.renderResults(state.search.result, gotoPage)
    }
-
-})
+});
 
 
 
@@ -119,3 +121,23 @@ elements.searchResPages.addEventListener('click', e=>{
 // ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 window.addEventListener('hashchange', controlRecipe);
 window.addEventListener('load', controlRecipe);
+
+// kontrolizanje 
+elements.recipe.addEventListener('click', e => {
+   console.log(e.target.matches('.btn-decrease, .btn-decrease *' ));
+   
+   if (e.target.matches('.btn-decrease, .btn-decrease *' )) {
+         // Decrease button is clicked
+         // mora bit najmanje jedna osoba...
+         if(state.recipe.servings > 1){
+            state.recipe.updateServising('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+         }
+      } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+         // Increase button is clicked
+         state.recipe.updateServising('inc');
+         recipeView.updateServingsIngredients(state.recipe);
+      };
+      console.log(state.recipe); 
+
+});

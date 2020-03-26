@@ -6,7 +6,6 @@ export default class Recipe {
   }
 
 
-  
   async getRecipe() {
     try {
       // https://forkify-api.herokuapp.com/api/get?&rId=47032
@@ -116,8 +115,21 @@ export default class Recipe {
         console.log(objIng);
 
         return objIng;
-      })
+      });
 
       this.ingredients = newIngredience;
-  }
+
+    }
+    
+    // promjena količina
+    updateServising (type) {
+      // servisnig
+      const newServising = type === 'dec' ? this.servings - 1 : this.servings + 1
+
+      // preračunavamo potrebne namirnice
+      this.ingredients.forEach(ing => {
+        ing.count = ing.count * ( newServising / this.servings);
+      })
+      this.servings = newServising;
+    }
 }
