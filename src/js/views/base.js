@@ -3,12 +3,15 @@ export const elements = {
   searchInput: document.querySelector('.search__field'),
   listRecipe: document.querySelector('.results__list'),
   searchLoader: document.querySelector('.results'),
-  searchResPages: document.querySelector('.results__pages')
+  searchResPages: document.querySelector('.results__pages'),
+  recipe: document.querySelector('.recipe')
   
 }
 
 
-
+//************************************** */
+// SPINNER POCETAK
+// iscrtavanje loadera na ekran
 export const renderLoader = (parent) => {
   const loader = `
   <div class="loader">
@@ -21,11 +24,11 @@ export const renderLoader = (parent) => {
 }
 
 
-
+// brisanje spinnera sa ekrana
 export const clearLoader = () => {
 const loader = document.querySelector('.loader');
   if (loader) {
    loader.remove();
   }
-
 }
+// SPINER KRAJ ********************************

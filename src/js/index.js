@@ -1,6 +1,7 @@
 import Search from './models/Search';
-import * as searchView from './views/searchView';
 import  Recipe  from './models/Recipe';
+import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /** Global state of the app
@@ -10,7 +11,7 @@ import {elements, renderLoader, clearLoader} from './views/base';
  * - Liked recipes
  */
 
-
+// definiramo stanje stranice, tu je pohranjeno trenutno stanje svih vrijednosti
 const state = {};
 
 
@@ -18,9 +19,8 @@ const state = {};
 * SEARCH CONTROLER
 */
 const controlSearch = async () => {
-   // 1) Get query from view
+   // 1) Očitanje ulazne vrijednosti (pasta, pizza....)
    const query = searchView.getInput();
-   console.log(query)
 
    if (query) {
       // 2) New search object and add to state
@@ -29,26 +29,79 @@ const controlSearch = async () => {
       // 3) Prepare UI for results
       searchView.clearInput();
       searchView.clearResults();
+
+      //ubacen spinner
       renderLoader(elements.searchLoader);
 
-      // 4) Search for recipes
+      // 4)  povlačenje podataka se net-a
       await state.search.getResults();
       
       // 5) Render results on UI
+      // obrisan spinner nakon ucitavanje podataka
       clearLoader();
       searchView.renderResults(state.search.result)
-   
    }
 };
 
 
-// ovdije zapocinjemo sa programom
+
+
+/*
+* RECIPE CONTROLER
+*/
+
+const controlRecipe = async () => {
+   // povlačim podatak direkno sa stranice i dobivamo npr. #45873
+   // let id = window.location.hash.replace('#','');
+   let id = window.location.hash;
+   
+   // dobivamo podatak npr #45873, nama treba 45873, micemo hash
+   id = id.replace('#','');
+   
+   if (id) {
+      // Prepare UI for changes
+      recipeView.clearRecipe();
+      renderLoader(elements.recipe);
+      // Highlight selected search item
+      
+      // Create new recipe object
+      state.recipe = new Recipe(id);
+      
+      // TESTIRANJE
+      window.r = state.recipe;
+      
+      try {
+         
+         // Get recipe data and parse ingredients
+         await state.recipe.getRecipe();
+         
+         // Calculate servings and time
+         state.recipe.calcTime();
+         state.recipe.calcServings();
+         state.recipe.parseIngredience();
+         // Render recipe
+         clearLoader();
+         recipeView.renderRecipe(state.recipe)
+         console.log(state.recipe)
+      } catch (err) {
+         alert(err)
+      }
+
+
+      
+   }
+};
+
+
+
+// EventListener
   elements.searchForm.addEventListener('submit', e => {
   // sprečavamo da se stranica sama radi refres
   e.preventDefault();
   controlSearch();
 })
 
+// za <-PREV   NEXT->
 elements.searchResPages.addEventListener('click', e=>{
    const btn = e.target.closest('.btn-inline');
    if (btn) {
@@ -60,48 +113,9 @@ elements.searchResPages.addEventListener('click', e=>{
 })
 
 
-/*
-* RECIPE CONTROLER
-*/
 
-const controlRecipe = async () => {
-   // povlačim podatak direkno sa stranice i dobivamo npr. #45873
-   // let id = window.location.hash.replace('#','');
-   let id = window.location.hash;
-
-   // dobivamo podatak npr #45873, nama treba 45873, micemo hash
-   id = id.replace('#','');
-   
-   if (id) {
-      // Prepare UI for changes
-
-      // Highlight selected search item
-
-      // Create new recipe object
-      state.recipe = new Recipe(id);
-
-      try {
-      
-            // Get recipe data and parse ingredients
-            await state.recipe.getRecipe();
-            
-            // Calculate servings and time
-            state.recipe.calcTime();
-            state.recipe.calcServings();
-            // Render recipe
-            
-            console.log(state.recipe)
-      } catch (err) {
-         alert(err)
-      }
-      
-   }
-
-
-};
-
-window.addEventListener('hashchange', controlRecipe);
-window.addEventListener('load', controlRecipe);
 
 // moze i ovako..
 // ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+window.addEventListener('hashchange', controlRecipe);
+window.addEventListener('load', controlRecipe);
