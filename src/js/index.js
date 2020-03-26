@@ -3,6 +3,7 @@ import  Recipe  from './models/Recipe';
 import  List  from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /** Global state of the app
@@ -42,6 +43,29 @@ const controlSearch = async () => {
       clearLoader();
       searchView.renderResults(state.search.result)
    }
+};
+
+/*
+* LIST CONTROLER
+*/
+const controlList = () => {
+   // create a new list
+   if(!state.list){
+      state.list = new List();
+   }
+
+   // addeach ingredient on the list an user
+   state.recipe.ingredients.forEach( el =>  {
+      // za svaki ingrediens pojedinacno kreira HTML tepmlate kreira
+     let item = state.list.addItem(el.count, el.unit, el.ingredient);
+     listView.renderItem(item);
+   });
+
+
+
+
+
+
 };
 
 
@@ -116,39 +140,64 @@ elements.searchResPages.addEventListener('click', e=>{
 });
 
 
+//EventListener za listView
+elements.shopping.addEventListener('click', e=> {
+   const id = e.target.closest('.shopping__item').dataset.itemid;
+   // handle delete
+   if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+      // delete from state
+      state.list.deleteItem(id);
+
+      // delete from IU
+      listView.deleteItem(id);
+
+   // handle the count update
+   } else if ( e.target.matches('.shopping__count-value, .shopping__count-value *')){      
+      const val = parseFloat(e.target.value, 10);
+      state.list.updateCount(id, val);
+      console.log(state);
+      
+   }
+
+   
+});
+
+
+
+
+
+
+// EventListener za recipeView
+elements.recipe.addEventListener('click', e => {
+   console.log(e.target.matches('.btn-decrease, .btn-decrease *' ));
+   
+   if (e.target.matches('.btn-decrease, .btn-decrease *' )) {
+      // Decrease button is clicked
+      // mora bit najmanje jedna osoba...
+      if(state.recipe.servings > 1){
+         state.recipe.updateServising('dec');
+         recipeView.updateServingsIngredients(state.recipe);
+      }
+   } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+      // Increase button is clicked
+      state.recipe.updateServising('inc');
+      recipeView.updateServingsIngredients(state.recipe);
+   } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+      controlList();
+      
+   }
+   
+   
+   
+   
+   console.log(state.recipe); 
+   
+});
 
 
 // moze i ovako..
 // ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 window.addEventListener('hashchange', controlRecipe);
 window.addEventListener('load', controlRecipe);
-
-// kontrolizanje 
-elements.recipe.addEventListener('click', e => {
-   console.log(e.target.matches('.btn-decrease, .btn-decrease *' ));
-   
-   if (e.target.matches('.btn-decrease, .btn-decrease *' )) {
-         // Decrease button is clicked
-         // mora bit najmanje jedna osoba...
-         if(state.recipe.servings > 1){
-            state.recipe.updateServising('dec');
-            recipeView.updateServingsIngredients(state.recipe);
-         }
-      } else if (e.target.matches('.btn-increase, .btn-increase *')) {
-         // Increase button is clicked
-         state.recipe.updateServising('inc');
-         recipeView.updateServingsIngredients(state.recipe);
-      };
-      console.log(state.recipe); 
-
-});
-
-state.list = new List();
-const l = new List();
-
-l.addItem(1,2,'Opis')
-
-console.log('zzzzzzzzzzzzzzz');
-console.log(l);
 
 

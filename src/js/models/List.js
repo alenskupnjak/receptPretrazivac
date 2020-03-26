@@ -4,14 +4,15 @@ export default class List {
   }
 
   addItem (count, unit, ingredient) {
-    const item = {
-        id: Math.random(),
+    const namirnica = {
+        id: Math.random().toString(),
         count: count,
         unit: unit,
         ingredient: ingredient
     }
-    this.item.push(item);
-    return item;
+    // dodajem na listu svih namirnica
+    this.item.push(namirnica);
+    return namirnica;
   }
   
   deleteItem(id) {
