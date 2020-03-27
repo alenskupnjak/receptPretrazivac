@@ -7,12 +7,19 @@ export default class Likes {
     addLike(id, title, author, img) {
       const like = { id:id, title: title, author: author, img:img }
       this.likes.push(like)
+
+      // Spremi podatak u localstorage
+      this.persistData();
+
       return like
     }
 
     deleteLike(id) {
         const index = this.likes.findIndex( el => el.id === id);
         this.likes.splice(index,1);
+
+        // Spremi podatak u localstorage
+        this.persistData();
     }
 
 
@@ -35,6 +42,16 @@ export default class Likes {
 
     getNumLikes() {
       return this.likes.length;
+    }
+
+    persistData() {
+      localStorage.setItem('likeStorage', JSON.stringify(this.likes));
+    }
+
+    readStorage() {
+      const storage = JSON.parse(localStorage.getItem('likeStorage'));      
+      // spremamo rezultate iz lokal storage
+      if (storage) this.likes = storage;
     }
 
 }

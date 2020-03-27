@@ -20,7 +20,6 @@ export const clearResults = () => {
 // selektiranje na ekranu odabrani recept
 export const highlightSelected = id => {
   const resultsArr = Array.from(document.querySelectorAll('.results__link'));
-  console.log('ahha');
   
   console.log(resultsArr);
   resultsArr.forEach(el => {

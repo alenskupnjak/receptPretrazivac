@@ -68,13 +68,9 @@ const controlList = () => {
 /*
 * LIKE CONTROLER
 */
-
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumLikes());
 const controlLike= () => {
    // kreiran state.like ako ne postoji 
    if(!state.likes) state.likes = new Likes();
-   console.log(state);
    const currentId = state.recipe.id;
 
    // NE - lajkani recept nije na listi
@@ -169,6 +165,7 @@ elements.searchForm.addEventListener('submit', e => {
   // sprečavamo da se stranica sama radi refres
   e.preventDefault();
   controlSearch();
+  Likes.readStorage();
 });
 
 
@@ -234,6 +231,30 @@ elements.recipe.addEventListener('click', e => {
    
    console.log(state.recipe); 
 });
+
+
+// kada sae ucitava stranica
+window.addEventListener('load', () => {
+   state.likes = new Likes();
+   
+   // očitavamo podatke sa local storage
+   state.likes.readStorage();
+
+   // Toggla like manu button
+   likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+   console.log('eeeeeeeeeeeeee');
+   console.log(state);
+   
+
+   // osježavamo postojeći likes listu
+   state.likes.likes.forEach(data => {
+      console.log('amoooooooo');
+      likesView.renderLike(data);
+   })
+
+});
+
 
 
 // moze i ovako..
