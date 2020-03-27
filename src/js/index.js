@@ -89,7 +89,6 @@ const controlLike= () => {
       // dodaj recept na listu
       likesView.renderLike(newLike);
 
-      console.log(state);
 
    // DA - lajkani recept je na listi
    } else {
@@ -145,16 +144,11 @@ const controlRecipe = async () => {
          state.recipe.parseIngredience();
          // Render recipe
          clearLoader();
-         recipeView.renderRecipe(state.recipe, state.likes.isLiked(id))
-         console.log(state.recipe)
+         recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
       } catch (err) {
-         console.log(err);
-         
          alert(err)
       }
       
-      console.log('Stanje projekta');
-      console.log(state)
    }
 };
 
@@ -195,7 +189,6 @@ elements.shopping.addEventListener('click', e=> {
    } else if ( e.target.matches('.shopping__count-value, .shopping__count-value *')){      
       const val = parseFloat(e.target.value, 10);
       state.list.updateCount(id, val);
-      console.log(state);
    }
 });
 
@@ -206,7 +199,6 @@ elements.shopping.addEventListener('click', e=> {
 
 // EventListener za recipeView
 elements.recipe.addEventListener('click', e => {
-   console.log(e.target.matches('.btn-decrease, .btn-decrease *' ));
    
    if (e.target.matches('.btn-decrease, .btn-decrease *' )) {
       // Decrease button is clicked, mora bit najmanje jedna osoba...
@@ -228,8 +220,6 @@ elements.recipe.addEventListener('click', e => {
       // Like controler
       controlLike();
    }
-   
-   console.log(state.recipe); 
 });
 
 
@@ -243,13 +233,8 @@ window.addEventListener('load', () => {
    // Toggla like manu button
    likesView.toggleLikeMenu(state.likes.getNumLikes());
 
-   console.log('eeeeeeeeeeeeee');
-   console.log(state);
-   
-
    // osježavamo postojeći likes listu
    state.likes.likes.forEach(data => {
-      console.log('amoooooooo');
       likesView.renderLike(data);
    })
 

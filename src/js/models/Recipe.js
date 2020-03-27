@@ -43,35 +43,28 @@ export default class Recipe {
       const newIngredience = this.ingredients.map(data => {
         // 1. uniform units
         let ingredient = data.toLowerCase();
-        console.log('PRIJE OBRADE: ' + ingredient);
 
         // prolazimo kroz svaku namirnicu i mijenjamo vrijednosti prema unitsShort tablici
         unitsLong.forEach((unit, i) => {
           ingredient = ingredient.replace(unit, unitsShort[i]);
         });
-        console.log('NAKON ZAMJENE JEDINICA-   '+ ingredient);
 
         //2. mice textove u zagradama , zanemarujemo taj text
         ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
-        console.log('IZBAČCENE ZAGRADE - '+ ingredient);
 
 
         // 3. rasčlanjivanje zapisa u polje koje mozemo obradivati
         const arrIng = ingredient.split(' ');
-        console.log('NAMIRNICE POLJE - ' + arrIng);
 
         // trazimo dali u zapisu ima jedinicu mjere i na kojem mjestu
         // const unitIndex = arrIng.findIndex(el2 => units.includes(el2));
         let mjernaJedinica;
         const unitIndex = arrIng.findIndex((data, index) => {
-          console.log('DATA=' + data);
           if(unitsShort.includes(data)){
             mjernaJedinica = arrIng[index]
-            console.log('MERNA JEDINICA U index - ' + index + ' POLJU')
           }
           return unitsShort.includes(data)
         })
-        console.log('unitIndex: ' + unitIndex)
 
 
         let objIng;
@@ -79,14 +72,14 @@ export default class Recipe {
           // stvara polje od broj zapisa brojeva u nizu rijesavamo slucaj npr.: 1 1/4
           // primjer. 4 1/2 cups, arrCount is [4, 1/2] --> eval("4+1/2") --> 4.5
           // primjer. 4 cups, arrCount is [4]
-          const arrCount = arrIng.slice(0, unitIndex); console.log('broj zapisa brojeva u nizu= '+ arrCount.length);
+          const arrCount = arrIng.slice(0, unitIndex);
 
           let count;
           if(arrCount.length === 1){
               // ako se pojavio slučak 1-1/4 mijenjamo - u +
               count = eval(arrIng[0].replace('-','+'));
           } else {
-              count = eval(arrIng.slice(0,unitIndex).join('+')); console.log('count: ' + count);
+              count = eval(arrIng.slice(0,unitIndex).join('+'));
           }
 
           objIng = {
@@ -111,8 +104,6 @@ export default class Recipe {
             ingredient: ingredient
           };
         }
-
-        console.log(objIng);
 
         return objIng;
       });
