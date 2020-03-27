@@ -23,7 +23,7 @@ export default class Likes {
           return id
         }
       });
-      
+      // nije pronasao u polju, vrijednost = -1
       if (pronadi === -1) {
         return false;
       } else {

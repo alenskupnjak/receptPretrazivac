@@ -5,6 +5,7 @@ import  Likes  from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 import {elements, renderLoader, clearLoader} from './views/base';
 
 /** Global state of the app
@@ -63,16 +64,19 @@ const controlList = () => {
    });
 };
 
+
 /*
 * LIKE CONTROLER
 */
+
+state.likes = new Likes();
 const controlLike= () => {
    // kreiran state.like ako ne postoji 
    if(!state.likes) state.likes = new Likes();
    console.log(state);
    const currentId = state.recipe.id;
 
-   // NIJE - lajkani recept na listi
+   // NE - lajkani recept nije na listi
    if(!state.likes.isLiked(currentId)){
       // dodaj like u state
       const newLike = state.likes.addLike(
@@ -83,20 +87,24 @@ const controlLike= () => {
       );
 
       // Toggle like buttton
+      likesView.toggleLikeBtn(true);
 
       // dodaj recept na listu
       console.log(state);
 
-   // JE - lajkani recept JE na listi
+   // DA - lajkani recept je na listi
    } else {
       // makni like iz state
       state.likes.deleteLike(currentId);
-      // togglr >Like button
+
+      // toggle Like button
+      likesView.toggleLikeBtn(false);
 
       // Makni sa like liste
       console.log(state);
    }
 
+   likesView.toggleLikeMenu(state.likes.getNumLikes());
 };
 
 
@@ -138,9 +146,11 @@ const controlRecipe = async () => {
          state.recipe.parseIngredience();
          // Render recipe
          clearLoader();
-         recipeView.renderRecipe(state.recipe)
+         recipeView.renderRecipe(state.recipe, state.likes.isLiked(id))
          console.log(state.recipe)
       } catch (err) {
+         console.log(err);
+         
          alert(err)
       }
       
