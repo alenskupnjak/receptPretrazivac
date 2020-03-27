@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import  Recipe  from './models/Recipe';
 import  List  from './models/List';
+import  Likes  from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
@@ -60,14 +61,43 @@ const controlList = () => {
      let item = state.list.addItem(el.count, el.unit, el.ingredient);
      listView.renderItem(item);
    });
-
-
-
-
-
-
 };
 
+/*
+* LIKE CONTROLER
+*/
+const controlLike= () => {
+   // kreiran state.like ako ne postoji 
+   if(!state.likes) state.likes = new Likes();
+   console.log(state);
+   const currentId = state.recipe.id;
+
+   // NIJE - lajkani recept na listi
+   if(!state.likes.isLiked(currentId)){
+      // dodaj like u state
+      const newLike = state.likes.addLike(
+         currentId,
+         state.recipe.title,
+         state.recipe.author,
+         state.recipe.img
+      );
+
+      // Toggle like buttton
+
+      // dodaj recept na listu
+      console.log(state);
+
+   // JE - lajkani recept JE na listi
+   } else {
+      // makni like iz state
+      state.likes.deleteLike(currentId);
+      // togglr >Like button
+
+      // Makni sa like liste
+      console.log(state);
+   }
+
+};
 
 
 
@@ -122,7 +152,7 @@ const controlRecipe = async () => {
 
 
 // EventListener pokretanje programa
-  elements.searchForm.addEventListener('submit', e => {
+elements.searchForm.addEventListener('submit', e => {
   // sprečavamo da se stranica sama radi refres
   e.preventDefault();
   controlSearch();
@@ -156,10 +186,7 @@ elements.shopping.addEventListener('click', e=> {
       const val = parseFloat(e.target.value, 10);
       state.list.updateCount(id, val);
       console.log(state);
-      
    }
-
-   
 });
 
 
@@ -172,26 +199,27 @@ elements.recipe.addEventListener('click', e => {
    console.log(e.target.matches('.btn-decrease, .btn-decrease *' ));
    
    if (e.target.matches('.btn-decrease, .btn-decrease *' )) {
-      // Decrease button is clicked
-      // mora bit najmanje jedna osoba...
+      // Decrease button is clicked, mora bit najmanje jedna osoba...
       if(state.recipe.servings > 1){
          state.recipe.updateServising('dec');
          recipeView.updateServingsIngredients(state.recipe);
       }
+
    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
       // Increase button is clicked
       state.recipe.updateServising('inc');
       recipeView.updateServingsIngredients(state.recipe);
+
    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-      controlList();
-      
+      // Dodajem namirnice na shopping listu
+      controlList(); 
+
+   } else if (e.target.matches('.recipe__love, .recipe__love *')){
+      // Like controler
+      controlLike();
    }
    
-   
-   
-   
    console.log(state.recipe); 
-   
 });
 
 
