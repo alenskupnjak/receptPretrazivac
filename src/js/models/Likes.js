@@ -1,5 +1,5 @@
 export default class Likes {
-    constructor(){
+    constructor() {
       this.likes= [];
     }
 
@@ -10,7 +10,7 @@ export default class Likes {
       return like
     }
 
-    deleteLike(id){
+    deleteLike(id) {
         const index = this.likes.findIndex( el => el.id === id);
         this.likes.splice(index,1);
     }
@@ -33,7 +33,7 @@ export default class Likes {
       // return this.likes.findIndex( el=> el.id === id) !== -1
     }
 
-    getNumLikes (){
+    getNumLikes() {
       return this.likes.length;
     }
 

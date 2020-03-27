@@ -33,7 +33,7 @@ export const highlightSelected = id => {
 
 
 // limitiranje zapisa TITLR na odredeni vroj znakova (limit)
-const limitRecipeTitle = (title, limit = 17) => {
+export const limitRecipeTitle = (title, limit = 17) => {
   if (title.length < limit) return title;
   let newTitle = [];
   let brojac = 0;

@@ -70,6 +70,7 @@ const controlList = () => {
 */
 
 state.likes = new Likes();
+likesView.toggleLikeMenu(state.likes.getNumLikes());
 const controlLike= () => {
    // kreiran state.like ako ne postoji 
    if(!state.likes) state.likes = new Likes();
@@ -77,7 +78,7 @@ const controlLike= () => {
    const currentId = state.recipe.id;
 
    // NE - lajkani recept nije na listi
-   if(!state.likes.isLiked(currentId)){
+   if (!state.likes.isLiked(currentId)) {
       // dodaj like u state
       const newLike = state.likes.addLike(
          currentId,
@@ -90,6 +91,8 @@ const controlLike= () => {
       likesView.toggleLikeBtn(true);
 
       // dodaj recept na listu
+      likesView.renderLike(newLike);
+
       console.log(state);
 
    // DA - lajkani recept je na listi
@@ -101,7 +104,7 @@ const controlLike= () => {
       likesView.toggleLikeBtn(false);
 
       // Makni sa like liste
-      console.log(state);
+      likesView.deleteLike(currentId);
    }
 
    likesView.toggleLikeMenu(state.likes.getNumLikes());
