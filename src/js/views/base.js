@@ -5,10 +5,8 @@ export const elements = {
   searchLoader: document.querySelector('.results'),
   searchResPages: document.querySelector('.results__pages'),
   recipe: document.querySelector('.recipe'),
-  shopping: document.querySelector('.shopping__list')
-  
-}
-
+  shopping: document.querySelector('.shopping__list'),
+};
 
 //************************************** */
 // SPINNER POCETAK
@@ -20,16 +18,15 @@ export const renderLoader = (parent) => {
       <use href="img/icons.svg#icon-cw"></use>
     </svg>
   </div>
-  `
-  parent.insertAdjacentHTML("afterbegin",loader)
-}
-
+  `;
+  parent.insertAdjacentHTML('afterbegin', loader);
+};
 
 // brisanje spinnera sa ekrana
 export const clearLoader = () => {
-const loader = document.querySelector('.loader');
+  const loader = document.querySelector('.loader');
   if (loader) {
-   loader.remove();
+    loader.remove();
   }
-}
+};
 // SPINER KRAJ ********************************
